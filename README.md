@@ -1,0 +1,1 @@
+This repository is used for playing around with aws services.
