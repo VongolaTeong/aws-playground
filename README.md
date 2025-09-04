@@ -4,10 +4,11 @@ A simplified horse racing game inspired by Umamusume (Pretty Derby) built with A
 
 ## Progress
 - Setup AWS free tier account
-- Created IAM group developers and user developer for programmatical access to aws.
-- Configured aws via IAM access key.
+- Created IAM group developers and user developer for programmatical access to aws
+- Configured aws via IAM access key
 - Installed terraform
 - Setup Localstack
+- Created vpc via terraform + localstack
 
 ## 📄 License
 MIT License - see LICENSE file for details.
