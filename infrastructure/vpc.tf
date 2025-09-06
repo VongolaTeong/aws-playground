@@ -72,3 +72,31 @@ resource "aws_route_table_association" "public_assoc" {
   subnet_id      = aws_subnet.public_1.id
   route_table_id = aws_route_table.public.id
 }
+
+# --- Private Subnet ---
+resource "aws_subnet" "private_1" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.2.0/24"
+  availability_zone       = "ap-southeast-1a"
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "umamusume-private-subnet-1"
+  }
+}
+
+# --- Private Route Table ---
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
+
+  # No internet route here (keeps it private)
+  tags = {
+    Name = "umamusume-private-rt"
+  }
+}
+
+# --- Associate Private Subnet with Private Route Table ---
+resource "aws_route_table_association" "private_assoc" {
+  subnet_id      = aws_subnet.private_1.id
+  route_table_id = aws_route_table.private.id
+}
