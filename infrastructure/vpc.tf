@@ -100,3 +100,28 @@ resource "aws_route_table_association" "private_assoc" {
   subnet_id      = aws_subnet.private_1.id
   route_table_id = aws_route_table.private.id
 }
+
+# Allocate Elastic IP for NAT Gateway
+resource "aws_eip" "nat_eip" {
+  domain = "vpc"
+  tags = {
+    Name = "umamusume-nat-eip"
+  }
+}
+
+# NAT Gateway in the public subnet
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.nat_eip.id
+  subnet_id     = aws_subnet.public_1.id
+  tags = {
+    Name = "umamusume-nat-gateway"
+  }
+  depends_on = [aws_internet_gateway.gw]
+}
+
+# Update private route table to send internet traffic through NAT
+resource "aws_route" "private_nat_gateway" {
+  route_table_id         = aws_route_table.private.id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = aws_nat_gateway.nat.id
+}

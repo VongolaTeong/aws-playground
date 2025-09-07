@@ -11,6 +11,7 @@ A simplified horse racing game inspired by Umamusume (Pretty Derby) built with A
 - Created vpc via terraform + localstack
 - Setup public subnet + igw + route table
 - Setup private subnet + route table
+- Setup NAT gateway
 
 ## 📄 License
 MIT License - see LICENSE file for details.
