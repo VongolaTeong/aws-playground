@@ -1,6 +1,6 @@
 services:
   localstack:
-    container_name: "${umamusume:-localstack-main}"
+    container_name: "umamusume-localstack"
     image: localstack/localstack:4.7.0
     ports:
       - "127.0.0.1:4566:4566"

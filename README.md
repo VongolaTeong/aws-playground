@@ -12,6 +12,7 @@ A simplified horse racing game inspired by Umamusume (Pretty Derby) built with A
 - Setup public subnet + igw + route table
 - Setup private subnet + route table
 - Setup NAT gateway
+- Setup security group
 
 ## 📄 License
 MIT License - see LICENSE file for details.

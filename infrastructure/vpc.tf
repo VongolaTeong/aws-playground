@@ -125,3 +125,63 @@ resource "aws_route" "private_nat_gateway" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.nat.id
 }
+
+# ------------------------------
+# Security Groups
+# ------------------------------
+
+# Public SG (allow SSH + HTTP from your IP / internet)
+resource "aws_security_group" "public_sg" {
+  name        = "umamusume-public-sg"
+  description = "Allow SSH and HTTP from internet"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = { Name = "umamusume-public-sg" }
+}
+
+# Private SG (allow traffic ONLY from public SG)
+resource "aws_security_group" "private_sg" {
+  name        = "umamusume-private-sg"
+  description = "Allow app traffic from public SG"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description      = "App traffic from public SG"
+    from_port        = 8080
+    to_port          = 8080
+    protocol         = "tcp"
+    security_groups  = [aws_security_group.public_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = { Name = "umamusume-private-sg" }
+}
