@@ -185,3 +185,31 @@ resource "aws_security_group" "private_sg" {
 
   tags = { Name = "umamusume-private-sg" }
 }
+
+# ------------------------------
+# EC2 Instances
+# ------------------------------
+
+# Public EC2 (bastion/web)
+resource "aws_instance" "public_ec2" {
+  ami           = "ami-0c02fb55956c7d316" # Amazon Linux 2 AMI (example for ap-southeast-2)
+  instance_type = "t2.micro"
+
+  subnet_id              = aws_subnet.public_1.id
+  vpc_security_group_ids = [aws_security_group.public_sg.id]
+  associate_public_ip_address = true
+
+  tags = { Name = "umamusume-public-ec2" }
+}
+
+# Private EC2 (app server)
+resource "aws_instance" "private_ec2" {
+  ami           = "ami-0c02fb55956c7d316"
+  instance_type = "t2.micro"
+
+  subnet_id              = aws_subnet.private_1.id
+  vpc_security_group_ids = [aws_security_group.private_sg.id]
+  associate_public_ip_address = false
+
+  tags = { Name = "umamusume-private-ec2" }
+}
