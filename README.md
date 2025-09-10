@@ -14,6 +14,7 @@ A simplified horse racing game inspired by Umamusume (Pretty Derby) built with A
 - Setup NAT gateway
 - Setup security group
 - Setup EC2
+- Setup RDS
 
 ## 📄 License
 MIT License - see LICENSE file for details.

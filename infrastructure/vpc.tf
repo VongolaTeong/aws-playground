@@ -213,3 +213,66 @@ resource "aws_instance" "private_ec2" {
 
   tags = { Name = "umamusume-private-ec2" }
 }
+
+# ------------------------------
+# DB Subnet Group
+# ------------------------------
+resource "aws_db_subnet_group" "umamusume_db_subnets" {
+  count      = 0
+  name       = "umamusume-db-subnet-group"
+  subnet_ids = [aws_subnet.private_1.id]
+
+  tags = {
+    Name = "umamusume-db-subnet-group"
+  }
+}
+
+# ------------------------------
+# Security Group for DB
+# ------------------------------
+resource "aws_security_group" "db_sg" {
+  name        = "umamusume-db-sg"
+  description = "Allow DB access only from app SG"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description     = "Postgres access from private app SG"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.private_sg.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = { Name = "umamusume-db-sg" }
+}
+
+# ------------------------------
+# RDS Instance
+# ------------------------------
+resource "aws_db_instance" "umamusume_db" {
+  count                  = 0
+  identifier             = "umamusume-db"
+  allocated_storage      = 20
+  engine                 = "postgres"
+  engine_version         = "15.3"
+  instance_class         = "db.t3.micro"
+  username               = "admin"
+  password               = "changeme123"
+  skip_final_snapshot    = true
+
+  db_subnet_group_name   = aws_db_subnet_group[0].umamusume_db_subnets.name
+  vpc_security_group_ids = [aws_security_group.db_sg.id]
+
+  publicly_accessible    = false
+  multi_az               = false
+  storage_type           = "gp2"
+
+  tags = { Name = "umamusume-rds" }
+}
