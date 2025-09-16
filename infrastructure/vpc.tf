@@ -267,7 +267,7 @@ resource "aws_db_instance" "umamusume_db" {
   password               = "changeme123"
   skip_final_snapshot    = true
 
-  db_subnet_group_name   = aws_db_subnet_group[0].umamusume_db_subnets.name
+  db_subnet_group_name   = aws_db_subnet_group.umamusume_db_subnets[0].name
   vpc_security_group_ids = [aws_security_group.db_sg.id]
 
   publicly_accessible    = false
