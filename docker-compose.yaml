@@ -1,0 +1,17 @@
+services:
+  localstack:
+    container_name: "umamusume-localstack"
+    image: localstack/localstack:4.7.0
+    ports:
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4510-4559:4510-4559"
+    restart: always
+    environment:
+      - DEBUG=${DEBUG:-0}
+      - AWS_DEFAULT_REGION=ap-southeast-2
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - PERSISTENCE=1
+    volumes:
+      - ./volume:/var/lib/localstack
+      - "/var/run/docker.sock:/var/run/docker.sock"
