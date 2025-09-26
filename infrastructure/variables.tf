@@ -19,7 +19,7 @@ variable "public_subnets" {
     az   = string
   }))
   default = [
-    { cidr = "10.0.1.0/24", az = "ap-southeast-1a" }
+    { cidr = "10.0.1.0/24", az = "ap-southeast-1" }
   ]
 }
 
@@ -30,7 +30,7 @@ variable "private_subnets" {
     az   = string
   }))
   default = [
-    { cidr = "10.0.2.0/24", az = "ap-southeast-1a" }
+    { cidr = "10.0.2.0/24", az = "ap-southeast-1" }
   ]
 }
 
