@@ -16,6 +16,7 @@ A simplified horse racing game inspired by Umamusume (Pretty Derby) built with A
 - Setup EC2
 - Setup RDS
 - Setup ALB
+- Built via terraform + localstack
 
 ## 📄 License
 MIT License - see LICENSE file for details.
