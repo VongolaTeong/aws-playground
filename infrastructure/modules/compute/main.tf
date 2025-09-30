@@ -37,6 +37,8 @@ resource "aws_instance" "compute" {
   subnet_id                   = var.subnet_id
   vpc_security_group_ids      = [aws_security_group.compute_sg.id]
   associate_public_ip_address = var.associate_public_ip
+  user_data                   = var.user_data
+  user_data_replace_on_change = true
 
   tags = {
     Name = "${var.project}-compute"

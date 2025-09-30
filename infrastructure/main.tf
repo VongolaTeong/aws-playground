@@ -18,6 +18,14 @@ module "compute" {
   ami_id              = var.ami_id
   instance_type       = var.instance_type
   associate_public_ip = true
+  user_data           = <<-EOT
+    #!/bin/bash
+    set -euxo pipefail
+    yum install -y nginx
+    echo "OK" > /usr/share/nginx/html/index.html
+    systemctl enable nginx
+    systemctl start nginx
+  EOT
 }
 
 # ALB Module
