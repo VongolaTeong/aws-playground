@@ -13,10 +13,7 @@ variable "public_subnet_ids" {
   type        = list(string)
 }
 
-variable "security_group_id" {
-  description = "Security group for the ALB"
-  type        = string
-}
+# Removed security_group_id variable - ALB now has its own security group
 
 variable "target_instance_ids" {
   description = "List of instance IDs to attach to the target group"

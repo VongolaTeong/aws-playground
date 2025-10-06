@@ -29,3 +29,9 @@ variable "associate_public_ip" {
   type        = bool
   default     = true
 }
+
+variable "user_data" {
+  description = "User data script to bootstrap the EC2 instance"
+  type        = string
+  default     = ""
+}

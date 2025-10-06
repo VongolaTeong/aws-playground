@@ -19,7 +19,8 @@ variable "public_subnets" {
     az   = string
   }))
   default = [
-    { cidr = "10.0.1.0/24", az = "ap-southeast-1a" }
+    { cidr = "10.0.1.0/24", az = "ap-southeast-1a" },
+    { cidr = "10.0.3.0/24", az = "ap-southeast-1b" }
   ]
 }
 
@@ -30,7 +31,8 @@ variable "private_subnets" {
     az   = string
   }))
   default = [
-    { cidr = "10.0.2.0/24", az = "ap-southeast-1a" }
+    { cidr = "10.0.2.0/24", az = "ap-southeast-1a" },
+    { cidr = "10.0.4.0/24", az = "ap-southeast-1b" }
   ]
 }
 
@@ -44,7 +46,7 @@ variable "enable_nat" {
 variable "ami_id" {
   description = "AMI ID for EC2 instance"
   type        = string
-  default     = "ami-0c02fb55956c7d316" # Amazon Linux 2 (example)
+  default     = "ami-068e0544093435043" # Amazon Linux 2 (ap-southeast-1)
 }
 
 variable "instance_type" {
