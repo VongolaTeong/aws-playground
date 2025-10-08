@@ -27,3 +27,4 @@ services:
       - SPRING_PROFILES_ACTIVE=default
     depends_on:
       - localstack
+    restart: always

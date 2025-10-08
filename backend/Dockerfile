@@ -5,7 +5,7 @@ WORKDIR /app
 COPY pom.xml .
 RUN mvn -q -e -B -DskipTests dependency:go-offline
 COPY src ./src
-RUN mvn -q -e -B -DskipTests package
+RUN mvn -q -e -B -DskipTests package spring-boot:repackage
 
 FROM eclipse-temurin:17-jre
 ENV APP_HOME=/opt/app
