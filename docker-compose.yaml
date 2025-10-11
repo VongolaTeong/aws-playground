@@ -15,3 +15,37 @@ services:
     volumes:
       - ./volume:/var/lib/localstack
       - "/var/run/docker.sock:/var/run/docker.sock"
+
+  backend:
+    container_name: "umamusume-backend"
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/umamusume
+      - SPRING_DATASOURCE_USERNAME=umamusume
+      - SPRING_DATASOURCE_PASSWORD=umamusume
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+    depends_on:
+      - localstack
+      - postgres
+    restart: always
+
+  postgres:
+    container_name: "umamusume-postgres"
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=umamusume
+      - POSTGRES_USER=umamusume
+      - POSTGRES_PASSWORD=umamusume
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdata:
