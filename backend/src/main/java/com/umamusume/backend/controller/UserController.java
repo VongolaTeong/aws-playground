@@ -2,6 +2,8 @@ package com.umamusume.backend.controller;
 
 import com.umamusume.backend.entity.User;
 import com.umamusume.backend.repository.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@Tag(name = "Users", description = "User management operations")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -21,11 +24,13 @@ public class UserController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all users", description = "Retrieve a list of all users")
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get user by ID", description = "Retrieve a specific user by their ID")
     public ResponseEntity<User> getUserById(@PathVariable UUID id) {
         Optional<User> user = userRepository.findById(id);
         return user.map(ResponseEntity::ok)
@@ -33,6 +38,7 @@ public class UserController {
     }
 
     @PostMapping
+    @Operation(summary = "Create a new user", description = "Create a new user with a unique username")
     public ResponseEntity<User> createUser(@RequestBody CreateUserRequest request) {
         if (userRepository.existsByUsername(request.username())) {
             return ResponseEntity.badRequest().build();
