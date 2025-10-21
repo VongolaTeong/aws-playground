@@ -125,6 +125,7 @@ curl http://127.0.0.1:8080/health/db
 - Application Load Balancer
 - Complete infrastructure deployment
 - Backend setup
+- Frontend setup
 
 #### Next Steps
 - Frontend application development
