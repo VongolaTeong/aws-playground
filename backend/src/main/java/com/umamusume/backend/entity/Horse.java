@@ -1,5 +1,6 @@
 package com.umamusume.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -49,6 +50,7 @@ public class Horse {
         this.name = name;
     }
 
+    @JsonIgnore
     public User getOwner() {
         return owner;
     }

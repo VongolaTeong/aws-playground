@@ -6,6 +6,7 @@ import com.umamusume.backend.repository.HorseRepository;
 import com.umamusume.backend.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class HorseController {
     }
 
     @GetMapping
+    @Transactional(readOnly = true)
     public List<Horse> getAllHorses() {
         return horseRepository.findAll();
     }
