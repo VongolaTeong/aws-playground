@@ -1,5 +1,6 @@
 package com.umamusume.backend.controller;
 
+import com.umamusume.backend.dto.HorseResponseDto;
 import com.umamusume.backend.entity.Horse;
 import com.umamusume.backend.entity.User;
 import com.umamusume.backend.repository.HorseRepository;
@@ -27,24 +28,31 @@ public class HorseController {
 
     @GetMapping
     @Transactional(readOnly = true)
-    public List<Horse> getAllHorses() {
-        return horseRepository.findAll();
+    public List<HorseResponseDto> getAllHorses() {
+        return horseRepository.findAll().stream()
+                .map(HorseResponseDto::fromEntity)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Horse> getHorseById(@PathVariable UUID id) {
+    @Transactional(readOnly = true)
+    public ResponseEntity<HorseResponseDto> getHorseById(@PathVariable UUID id) {
         Optional<Horse> horse = horseRepository.findById(id);
-        return horse.map(ResponseEntity::ok)
+        return horse.map(h -> ResponseEntity.ok(HorseResponseDto.fromEntity(h)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/owner/{ownerId}")
-    public List<Horse> getHorsesByOwner(@PathVariable UUID ownerId) {
-        return horseRepository.findByOwnerId(ownerId);
+    @Transactional(readOnly = true)
+    public List<HorseResponseDto> getHorsesByOwner(@PathVariable UUID ownerId) {
+        return horseRepository.findByOwnerId(ownerId).stream()
+                .map(HorseResponseDto::fromEntity)
+                .toList();
     }
 
     @PostMapping
-    public ResponseEntity<Horse> createHorse(@RequestBody CreateHorseRequest request) {
+    @Transactional
+    public ResponseEntity<HorseResponseDto> createHorse(@RequestBody CreateHorseRequest request) {
         Optional<User> owner = userRepository.findById(request.ownerId());
         if (owner.isEmpty()) {
             return ResponseEntity.badRequest().build();
@@ -52,11 +60,12 @@ public class HorseController {
         
         Horse horse = new Horse(request.name(), owner.get());
         Horse savedHorse = horseRepository.save(horse);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedHorse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(HorseResponseDto.fromEntity(savedHorse));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Horse> updateHorse(@PathVariable UUID id, @RequestBody UpdateHorseRequest request) {
+    @Transactional
+    public ResponseEntity<HorseResponseDto> updateHorse(@PathVariable UUID id, @RequestBody UpdateHorseRequest request) {
         Optional<Horse> existingHorse = horseRepository.findById(id);
         if (existingHorse.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -71,7 +80,7 @@ public class HorseController {
         horse.setName(request.name());
         horse.setOwner(owner.get());
         Horse updatedHorse = horseRepository.save(horse);
-        return ResponseEntity.ok(updatedHorse);
+        return ResponseEntity.ok(HorseResponseDto.fromEntity(updatedHorse));
     }
 
     @DeleteMapping("/{id}")
