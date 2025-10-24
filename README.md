@@ -78,7 +78,36 @@ infrastructure/
 - **LocalStack**: AWS service emulation for local development
 - **Docker Compose**: Containerized LocalStack environment
 - **Terraform**: Infrastructure provisioning
-- **Python**: Application runtime
+- **Backend**: Spring Boot service on port 8080
+
+##### Run backend locally (Windows PowerShell)
+```
+./scripts/dev-backend.ps1 -Watch
+```
+
+##### Run via Docker Compose
+```
+docker compose up --build backend
+```
+
+Once running, check health:
+```
+curl http://127.0.0.1:8080/health
+```
+
+#### Database (local development)
+- A local PostgreSQL service is included in Docker Compose.
+- Backend is pre-configured to use it via env vars.
+
+Bring up backend + Postgres:
+```
+docker compose up --build backend postgres
+```
+
+Check DB connectivity:
+```
+curl http://127.0.0.1:8080/health/db
+```
 
 ### Roadmap
 
@@ -95,6 +124,8 @@ infrastructure/
 - RDS PostgreSQL database
 - Application Load Balancer
 - Complete infrastructure deployment
+- Backend setup
+- Frontend setup
 
 #### Next Steps
 - Frontend application development
