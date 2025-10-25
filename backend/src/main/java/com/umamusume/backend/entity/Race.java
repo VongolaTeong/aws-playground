@@ -19,6 +19,30 @@ public class Race {
     @Column(nullable = false)
     private OffsetDateTime scheduledAt;
 
+    @Column(nullable = false)
+    private Integer basePrize = 1000;
+
+    @Column(nullable = false)
+    private Integer minLevel = 1;
+
+    @Column(nullable = false)
+    private Integer maxLevel = 10;
+
+    @Column(nullable = false)
+    private Integer maxParticipants = 8;
+
+    @Column(nullable = false)
+    private String raceType = "NORMAL"; // NORMAL, STAKES, HANDICAP, etc.
+
+    @Column(nullable = false)
+    private Integer distance = 1200; // in meters
+
+    @Column(nullable = false)
+    private String trackCondition = "GOOD"; // GOOD, FIRM, SOFT, HEAVY
+
+    @Column(nullable = false)
+    private Boolean isCompleted = false;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;
@@ -29,6 +53,29 @@ public class Race {
     public Race(String name, OffsetDateTime scheduledAt) {
         this.name = name;
         this.scheduledAt = scheduledAt;
+    }
+
+    public Race(String name, OffsetDateTime scheduledAt, Integer basePrize, Integer minLevel, Integer maxLevel) {
+        this.name = name;
+        this.scheduledAt = scheduledAt;
+        this.basePrize = basePrize;
+        this.minLevel = minLevel;
+        this.maxLevel = maxLevel;
+    }
+
+    // Game Logic Methods
+    public boolean isEligibleForHorse(Horse horse) {
+        return horse.getLevel() >= minLevel && 
+               horse.getLevel() <= maxLevel && 
+               !isCompleted;
+    }
+
+    public boolean isUpcoming() {
+        return scheduledAt.isAfter(OffsetDateTime.now()) && !isCompleted;
+    }
+
+    public boolean isPast() {
+        return scheduledAt.isBefore(OffsetDateTime.now()) || isCompleted;
     }
 
     // Getters and Setters
@@ -54,6 +101,70 @@ public class Race {
 
     public void setScheduledAt(OffsetDateTime scheduledAt) {
         this.scheduledAt = scheduledAt;
+    }
+
+    public Integer getBasePrize() {
+        return basePrize;
+    }
+
+    public void setBasePrize(Integer basePrize) {
+        this.basePrize = basePrize;
+    }
+
+    public Integer getMinLevel() {
+        return minLevel;
+    }
+
+    public void setMinLevel(Integer minLevel) {
+        this.minLevel = minLevel;
+    }
+
+    public Integer getMaxLevel() {
+        return maxLevel;
+    }
+
+    public void setMaxLevel(Integer maxLevel) {
+        this.maxLevel = maxLevel;
+    }
+
+    public Integer getMaxParticipants() {
+        return maxParticipants;
+    }
+
+    public void setMaxParticipants(Integer maxParticipants) {
+        this.maxParticipants = maxParticipants;
+    }
+
+    public String getRaceType() {
+        return raceType;
+    }
+
+    public void setRaceType(String raceType) {
+        this.raceType = raceType;
+    }
+
+    public Integer getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Integer distance) {
+        this.distance = distance;
+    }
+
+    public String getTrackCondition() {
+        return trackCondition;
+    }
+
+    public void setTrackCondition(String trackCondition) {
+        this.trackCondition = trackCondition;
+    }
+
+    public Boolean getIsCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(Boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 
     public OffsetDateTime getCreatedAt() {
