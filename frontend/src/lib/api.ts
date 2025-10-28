@@ -4,6 +4,9 @@ import type {
   CreateUserRequest,
   HorseDto,
   RaceDto,
+  RaceResultDto,
+  TrainHorseRequest,
+  BreedHorsesRequest,
   UpdateHorseRequest,
   UpdateRaceRequest,
   UpdateUserRequest,
@@ -99,6 +102,40 @@ export const RacesApi = {
   },
   delete(id: string): Promise<void> {
     return request<void>(`${BASE}/races/${id}`, { method: "DELETE" });
+  },
+};
+
+export const GameApi = {
+  simulateRace(raceId: string): Promise<RaceResultDto[]> {
+    return request<RaceResultDto[]>(`${BASE}/game/races/${raceId}/simulate`, {
+      method: "POST",
+    });
+  },
+  trainHorse(horseId: string, body: TrainHorseRequest): Promise<any> {
+    return request<any>(`${BASE}/game/horses/${horseId}/train`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  },
+  restHorse(horseId: string): Promise<any> {
+    return request<any>(`${BASE}/game/horses/${horseId}/rest`, {
+      method: "POST",
+    });
+  },
+  getTrainingRecommendations(horseId: string): Promise<any> {
+    return request<any>(`${BASE}/game/horses/${horseId}/training-recommendations`);
+  },
+  breedHorses(body: BreedHorsesRequest): Promise<HorseDto> {
+    return request<HorseDto>(`${BASE}/game/horses/breed`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  },
+  getRaceStatistics(raceId: string): Promise<any> {
+    return request<any>(`${BASE}/game/races/${raceId}/statistics`);
+  },
+  getHorseStats(horseId: string): Promise<any> {
+    return request<any>(`${BASE}/game/horses/${horseId}/stats`);
   },
 };
 
