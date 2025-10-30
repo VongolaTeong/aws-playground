@@ -114,3 +114,4 @@ public class RaceResult {
         this.createdAt = createdAt;
     }
 }
+

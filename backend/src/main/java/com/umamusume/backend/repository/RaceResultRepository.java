@@ -14,3 +14,4 @@ public interface RaceResultRepository extends JpaRepository<RaceResult, UUID> {
     List<RaceResult> findByRaceId(UUID raceId);
     List<RaceResult> findByHorseId(UUID horseId);
 }
+
